@@ -5,7 +5,6 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 
@@ -19,6 +18,9 @@ const useStyles = makeStyles({
   },
   cardLink: {
     textDecoration: "none"
+  },
+  cardActionArea: {
+    height: "144.4px"
   }
 });
 
@@ -34,7 +36,7 @@ function ProjectCard(props) {
             image={`https://picsum.photos/seed/${title.split(" ")[0]}/200/300`}
             title={title}
           />
-          <CardContent>
+          <CardContent className={classes.cardActionArea}>
             <Typography gutterBottom variant="h5" component="h2">
               {title}
             </Typography>
@@ -43,14 +45,6 @@ function ProjectCard(props) {
             </Typography>
           </CardContent>
         </CardActionArea>
-        <CardActions>
-          <Button size="small" color="primary">
-            Bid Now
-          </Button>
-          <Button size="small" color="primary">
-            Learn More
-          </Button>
-        </CardActions>
         </Link>
       </Card>
   )

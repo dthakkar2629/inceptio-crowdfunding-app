@@ -26,8 +26,6 @@ const useStyles = makeStyles({
 
 export default function DrawerLeft(props) {
   const classes = useStyles();
-  const {authProps} = props;
-  const [userLocal, setUserLocal] = useLocalStorageState("user");
   const [state, setState] = React.useState({
     left: false,
   });
