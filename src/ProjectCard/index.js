@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
@@ -24,12 +23,12 @@ const useStyles = makeStyles({
   }
 });
 
-function ProjectCard(props) {
-  const {id, title, description, picture} = props;
+function ProjectCard(props) {// eslint-disable-next-line
+  const {_id, title, description, picture} = props;
   const classes = useStyles();
   return (
     <Card className={classes.card}>
-      <Link className={classes.cardLink} to={`/project/${id}`}>
+      <Link className={classes.cardLink} to={`/project/${_id}`}>
         <CardActionArea>
           <CardMedia
             className={classes.media}

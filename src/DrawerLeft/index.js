@@ -12,7 +12,6 @@ import MailIcon from '@material-ui/icons/Mail';
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
-import { useLocalStorageState } from '../Hooks/useLocalStorageState';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({

@@ -6,6 +6,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import NumberFormat from 'react-number-format';
 import { serverUrl } from '../dummyProjectData';
+import { authHeader } from '../utils/headerBuilder';
 
 const useStyles = makeStyles(theme => ({
   projectImage: {
@@ -35,14 +36,22 @@ function ProjectDetails(props) {
   const [project, setProject] = useState({});
   const [amount, setAmount] = useState(0);
   useEffect(() => {
-    fetchProject();
+    fetchProject();// eslint-disable-next-line
   }, []);
   const fetchProject = async () => {
     try {
-      const projectResponse = await Axios.get(`${serverUrl}/testing/project/${id}`);
+      const projectResponse = await Axios.get(`${serverUrl}/api/project/${id}`);
       const {project} = projectResponse.data;
       setProject(project);
       setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const bidNow = async (e) => {
+    try {
+      const response = await Axios.post(`${serverUrl}/api/bid/${id}`, {amount}, authHeader);
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -94,7 +103,7 @@ function ProjectDetails(props) {
                   ))}
                 </Grid>
                 <Grid item xs={12}>
-                  <Button fullWidth variant="contained" color="primary">
+                  <Button onClick={bidNow} fullWidth variant="contained" color="primary">
                     Save Bid
                   </Button>
                 </Grid>
