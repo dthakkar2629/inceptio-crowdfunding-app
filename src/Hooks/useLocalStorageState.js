@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-function useLocalStorageState(key, defaultVal="") {
+function useLocalStorageState(key, defaultVal) {
   const [state, setState] = useState(() => {
     let value;
     try {
@@ -9,12 +9,10 @@ function useLocalStorageState(key, defaultVal="") {
     } catch (e) {
       value = defaultVal;
     }
-    console.log("USING", value);
     return value;
   });
   useEffect(() => {
-    window.localStorage.setItem(key, JSON.stringify(state));
-    // eslint-disable-next-line
+    window.localStorage.setItem(key, JSON.stringify(state));// eslint-disable-next-line
   }, [state]);
   return [state, setState];
 }

@@ -1,18 +1,17 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import {Home, CasinoOutlined, FileCopy} from '@material-ui/icons';
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
+import BalanceMsg from '../BalanceMsg';
 
 const useStyles = makeStyles({
   list: {
@@ -21,6 +20,10 @@ const useStyles = makeStyles({
   fullList: {
     width: 'auto',
   },
+  noLinkDecor: {
+    textDecoration: "none",
+    color: "black"
+  }
 });
 
 export default function DrawerLeft(props) {
@@ -45,28 +48,37 @@ export default function DrawerLeft(props) {
       onKeyDown={toggleDrawer(side, false)}
     >
       <List>
-          <ListItem>
-            <Link to="/">Home</Link>
+        <Link className={classes.noLinkDecor} to="/">
+          <ListItem button>
+            <ListItemIcon><Home/></ListItemIcon>
+            <ListItemText>Home</ListItemText>
           </ListItem>
-          <ListItem>
-            <Link to="/about">About</Link>
-          </ListItem>
-          <ListItem>
-            <Link to="/meet-the-team">Team</Link>
-          </ListItem>
-          <Divider/>
-          <ListItem>
-            <Link to="/logout">Logout</Link>
-          </ListItem>
+        </Link>
+        <ListItem>
+          <BalanceMsg/>
+        </ListItem>
+        {/* <ListItem>
+          <Link to="/meet-the-team">Team</Link>
+        </ListItem>
+        <Divider/>
+        <ListItem>
+          <Link to="/logout">Logout</Link>
+        </ListItem> */}
       </List>
       <Divider />
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+        <Link className={classes.noLinkDecor} to="/my-bids">
+          <ListItem button>
+            <ListItemIcon><CasinoOutlined/></ListItemIcon>
+            <ListItemText>My Recent Bids</ListItemText>
           </ListItem>
-        ))}
+        </Link>
+        <Link className={classes.noLinkDecor} to="/">
+          <ListItem button>
+            <ListItemIcon><FileCopy/></ListItemIcon>
+            <ListItemText>All Projects</ListItemText>
+          </ListItem>
+        </Link>
       </List>
     </div>
   );
@@ -92,7 +104,6 @@ export default function DrawerLeft(props) {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Button onClick={toggleDrawer('left', true)}>Open Left</Button>
       {props.children}
       <SwipeableDrawer
         open={state.left}

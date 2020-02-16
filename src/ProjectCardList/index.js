@@ -4,11 +4,13 @@ import { serverUrl } from '../dummyProjectData';
 import ProjectCard from '../ProjectCard';
 import Axios from 'axios';
 import LoadingBar from '../LoadingBar';
+import { authHeader } from '../utils/headerBuilder';
+import BalanceMsg from '../BalanceMsg';
 
 const useStyles = makeStyles({
   root: {
     maxWidth: "1000px",
-    margin: "2rem auto"
+    margin: "1rem auto"
   },
   cardGrid: {
     display: "flex",
@@ -23,7 +25,7 @@ function ProjectCardList(props) {
     fetchProjects();
   }, []);
   const fetchProjects = async () => {
-    const response = await Axios.get(`${serverUrl}/api/project/fetch-all`);
+    const response = await Axios.get(`${serverUrl}/api/project/fetch-all`, authHeader);
     console.log(response);
     setProjects(response.data.projects);
     setLoading(false);
@@ -33,6 +35,7 @@ function ProjectCardList(props) {
   loading ? 
     <LoadingBar height={42}/> : 
     <div className={classes.root}>
+      <BalanceMsg styleProp={{ maxWidth: "70vw", margin: "0 auto 1rem auto" }} />
       <Grid container spacing={2}>
         {projects.map(p => 
           <Grid className={classes.cardGrid} item xs={12} sm={6} md={4}>

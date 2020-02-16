@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Typography, Container, makeStyles, Grid, TextField, Button, Divider } from '@material-ui/core';
+import React, { useEffect, useState, useContext } from 'react';
+import { Typography, Container, makeStyles, Grid, TextField, Button, Divider, CircularProgress } from '@material-ui/core';
 import Axios from 'axios';
 import LoadingBar from '../LoadingBar';
 import Fab from '@material-ui/core/Fab';
@@ -7,6 +7,9 @@ import AddIcon from '@material-ui/icons/Add';
 import NumberFormat from 'react-number-format';
 import { serverUrl } from '../dummyProjectData';
 import { authHeader } from '../utils/headerBuilder';
+import { useLocalStorageState } from '../Hooks/useLocalStorageState';
+import { useParams, useHistory } from 'react-router-dom';
+import { AlertContext } from '../Contexts/alertContext';
 
 const useStyles = makeStyles(theme => ({
   projectImage: {
@@ -27,33 +30,67 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const addAmounts = [50000, 100000, 200000];
-
 function ProjectDetails(props) {
   const classes = useStyles();
-  const {id} = props.match.params;
+  const {id} = useParams();
+  const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [project, setProject] = useState({});
   const [amount, setAmount] = useState(0);
+  const [enableBidding, setEnableBidding] = useState(true);
+  const [user, setUser] = useLocalStorageState("user");
+  const {setAlert} = useContext(AlertContext);
+  const [addAmounts, setAddAmounts] = useState([5000, 10000, 20000])
   useEffect(() => {
-    fetchProject();// eslint-disable-next-line
+    fetchProject();
+    defineAddAmount();// eslint-disable-next-line
   }, []);
   const fetchProject = async () => {
     try {
-      const projectResponse = await Axios.get(`${serverUrl}/api/project/${id}`);
-      const {project} = projectResponse.data;
-      setProject(project);
-      setLoading(false);
+      const response = await Axios.get(`${serverUrl}/api/project/${id}`, authHeader);
+      if(Math.floor(response.status/100) === 2){
+        const {project} = response.data;
+        setProject(project);
+        setLoading(false);
+      } else {
+        setAlert(true, response.msg || "Connection to server cannot be estabilished!", "error");
+      }
     } catch (error) {
       console.log(error);
+      setAlert(true, error.msg, "error");
     }
+  }
+  const defineAddAmount = () => {
+    const unit = user.balance/20;
+    const factor = (unit < 1000000) ? ((unit < 100000) ? ((unit < 10000) ? 1000 : 1000) : 1000) : 10000; 
+    const factors = [factor, 2*factor, 5*factor];
+    setAddAmounts(factors);
   }
   const bidNow = async (e) => {
     try {
+      setEnableBidding(false);
+      if(amount < 100 ){
+        setEnableBidding(true);
+        return setAlert(true, "Amount must be greater than 100", "error");
+      }
+      if(amount > user.balance){
+        setEnableBidding(true);
+        return setAlert(true, "Insufficient Funds!", "error");
+      }
       const response = await Axios.post(`${serverUrl}/api/bid/${id}`, {amount}, authHeader);
       console.log(response);
+      if(Math.floor(response.status/100) === 2){
+        setUser({...user, balance: response.data.balance});
+        setAlert(true, "Bid Successfull !", "success");
+        history.push('/');
+      } else {
+        setEnableBidding(true);
+        setAlert(true, response.msg || "Connection to server cannot be estabilished!", "error");
+      }
     } catch (error) {
       console.log(error);
+      setEnableBidding(true);
+      setAlert(true, error.msg, "error");
     }
   }
   const handleAmountChange = e => setAmount(e.target.value);
@@ -96,16 +133,19 @@ function ProjectDetails(props) {
                 </Grid>
                 <Grid item xs={12} className={classes.addButtons}>
                   {addAmounts.map(amt => (
-                    <Fab variant="extended" size="small" color="secondary" value={amt} aria-label="add" onClick={e => setAmount(amount => parseInt(amount || 0)+amt)}>
+                    <Fab key={amt} variant="extended" size="small" color="secondary" value={amt} aria-label="add" onClick={e => setAmount(amount => parseInt(amount || 0)+amt)}>
                       <AddIcon />
                       ₹ <NumberFormat displayType="text" thousandSeparator={true} thousandsGroupStyle="lakh" value={amt} />
                     </Fab>
                   ))}
                 </Grid>
                 <Grid item xs={12}>
-                  <Button onClick={bidNow} fullWidth variant="contained" color="primary">
-                    Save Bid
+                  <Button disabled={!enableBidding} onClick={bidNow} fullWidth variant="contained" color="primary">
+                    Save Bid { !enableBidding && <CircularProgress /> }
                   </Button>
+                  <Typography variant="body1">
+                    Available Balance: {user.balance}
+                  </Typography>
                 </Grid>
               </Grid>
             </div>

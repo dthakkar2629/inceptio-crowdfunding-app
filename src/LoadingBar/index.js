@@ -1,5 +1,5 @@
 import React from 'react';
-import { LinearProgress, makeStyles } from '@material-ui/core';
+import { makeStyles, CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,11 +14,10 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function LoadingBar(props) {
-  const {height} = props
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <LinearProgress className={classes.colorPrimary} style={{height: `${height ? height : "10"}px`}} variant="query" color="primary" />
+      <CircularProgress />
     </div>
   )
 }
