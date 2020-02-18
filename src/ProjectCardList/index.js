@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
 import { serverUrl } from '../dummyProjectData';
 import ProjectCard from '../ProjectCard';
@@ -6,6 +6,7 @@ import Axios from 'axios';
 import LoadingBar from '../LoadingBar';
 import { authHeader } from '../utils/headerBuilder';
 import BalanceMsg from '../BalanceMsg';
+import { UserContext } from '../Contexts/userContext';
 
 const useStyles = makeStyles({
   root: {
@@ -21,11 +22,12 @@ const useStyles = makeStyles({
 function ProjectCardList(props) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const {tokenLocal} = useContext(UserContext);
   useEffect(() => {
-    fetchProjects();
+    fetchProjects();// eslint-disable-next-line
   }, []);
   const fetchProjects = async () => {
-    const response = await Axios.get(`${serverUrl}/api/project/fetch-all`, authHeader);
+    const response = await Axios.get(`${serverUrl}/api/project/fetch-all`, authHeader(tokenLocal));
     console.log(response);
     setProjects(response.data.projects);
     setLoading(false);
@@ -38,8 +40,8 @@ function ProjectCardList(props) {
       <BalanceMsg styleProp={{ maxWidth: "70vw", margin: "0 auto 1rem auto" }} />
       <Grid container spacing={2}>
         {projects.map(p => 
-          <Grid className={classes.cardGrid} item xs={12} sm={6} md={4}>
-            <ProjectCard key={p._id} {...p} />
+          <Grid key={p._id} className={classes.cardGrid} item xs={12} sm={6} md={4}>
+            <ProjectCard {...p} />
           </Grid>
         )}
       </Grid>

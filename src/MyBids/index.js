@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import LoadingBar from '../LoadingBar';
 import { Typography, List, ListItem, ListItemText, Paper, makeStyles } from '@material-ui/core';
 import Axios from 'axios';
@@ -9,6 +9,7 @@ import Moment from 'react-moment';
 import { green } from '@material-ui/core/colors';
 import BalanceMsg from '../BalanceMsg';
 import NumberFormat from 'react-number-format';
+import { UserContext } from '../Contexts/userContext';
 
 const useStyles = makeStyles(({
   bidItemPaper: {
@@ -26,13 +27,14 @@ const useStyles = makeStyles(({
 
 function MyBids(props) {
   const classes = useStyles();
+  const {tokenLocal} = useContext(UserContext);
   const [bids, setBids] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    fetchBids();
+    fetchBids();// eslint-disable-next-line
   }, []);
   const fetchBids = async () => {
-    const response = await Axios.get(`${serverUrl}/api/bid/fetch-all`, authHeader);
+    const response = await Axios.get(`${serverUrl}/api/bid/fetch-all`, authHeader(tokenLocal));
     setBids(response.data.bids);
     setLoading(false);
   }

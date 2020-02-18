@@ -4,7 +4,8 @@ import { UserContext } from '../Contexts/userContext';
 import Axios from 'axios';
 import { serverUrl } from '../dummyProjectData';
 import useInputState from '../Hooks/useInputState';
-import { useLocalStorageState } from '../Hooks/useLocalStorageState';
+import { AlertContext } from '../Contexts/alertContext';
+import { errorMessage } from '../utils/errorHandler';
 const useStyles = makeStyles( theme => ({
   root: {
     minHeight: "100vh"
@@ -17,26 +18,27 @@ const useStyles = makeStyles( theme => ({
     paddingTop: "2rem"
   },
   loginMain: {
-    paddingTop: "2rem"
+    paddingTop: "4rem"
   }
 }))
 
 function Login(props) {
   const classes = useStyles();
-  const {setUserLocal} = useContext(UserContext);
+  const {setUserLocal, setTokenLocal} = useContext(UserContext);
   const [uid, setUid] = useInputState("");
-  const [password, setPassword] = useInputState("");// eslint-disable-next-line
-  const [token, setToken] = useLocalStorageState("token", "");
+  const [password, setPassword] = useInputState("");
+  const {setAlert} = useContext(AlertContext);
   const handleLogin = async (e) => {
     try {
       e.preventDefault();
       const response = await Axios.post(`${serverUrl}/api/user/login`, {uid, password});
       const {token, user} = response.data;
       console.log({token, user});
-      setToken(token);
+      setAlert(true, "Awesome! Logged in Successfully!", "success");
+      setTokenLocal(token);
       setUserLocal(user);
     } catch (error) {
-      console.log(error);
+      setAlert(true, errorMessage(error), "error");
     }
   }
   return (
@@ -44,7 +46,7 @@ function Login(props) {
       <Container maxWidth="xs">
         <CssBaseline/>
         <div className={classes.loginMain}>
-          <Typography variant="h3">
+          <Typography style={{fontWeight: 700}} variant="h3">
             Crowdfunding
           </Typography>
           <Typography variant="caption">

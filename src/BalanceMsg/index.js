@@ -1,12 +1,12 @@
-import React from 'react';
-import { useLocalStorageState } from '../Hooks/useLocalStorageState';
+import React, { useContext } from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
+import { UserContext } from '../Contexts/userContext';
 
 function BalanceMsg(props) {
-  const [user] = useLocalStorageState("user", "");
+  const {userLocal} = useContext(UserContext);
   return (
-    user ?
-    <MuiAlert style={props.styleProp} elevation={6} variant="filled" severity="info">Your Balance: ₹ {user.balance}</MuiAlert>
+    userLocal ?
+    <MuiAlert style={props.styleProp} elevation={2} variant="filled" severity="info">Your Balance: ₹ {userLocal.balance}</MuiAlert>
     :
     <></>
   )

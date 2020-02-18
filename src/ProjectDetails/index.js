@@ -7,9 +7,10 @@ import AddIcon from '@material-ui/icons/Add';
 import NumberFormat from 'react-number-format';
 import { serverUrl } from '../dummyProjectData';
 import { authHeader } from '../utils/headerBuilder';
-import { useLocalStorageState } from '../Hooks/useLocalStorageState';
 import { useParams, useHistory } from 'react-router-dom';
 import { AlertContext } from '../Contexts/alertContext';
+import { UserContext } from '../Contexts/userContext';
+import { errorMessage } from '../utils/errorHandler';
 
 const useStyles = makeStyles(theme => ({
   projectImage: {
@@ -34,35 +35,34 @@ function ProjectDetails(props) {
   const classes = useStyles();
   const {id} = useParams();
   const history = useHistory();
+  const {tokenLocal, setUserLocal, userLocal} = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [project, setProject] = useState({});
   const [amount, setAmount] = useState(0);
   const [enableBidding, setEnableBidding] = useState(true);
-  const [user, setUser] = useLocalStorageState("user");
   const {setAlert} = useContext(AlertContext);
-  const [addAmounts, setAddAmounts] = useState([5000, 10000, 20000])
+  const [addAmounts, setAddAmounts] = useState([1000, 2000, 5000])
   useEffect(() => {
     fetchProject();
     defineAddAmount();// eslint-disable-next-line
   }, []);
   const fetchProject = async () => {
     try {
-      const response = await Axios.get(`${serverUrl}/api/project/${id}`, authHeader);
+      const response = await Axios.get(`${serverUrl}/api/project/${id}`, authHeader(tokenLocal));
       if(Math.floor(response.status/100) === 2){
         const {project} = response.data;
         setProject(project);
         setLoading(false);
       } else {
-        setAlert(true, response.msg || "Connection to server cannot be estabilished!", "error");
+        setAlert(true, response.data.msg || "Connection to server cannot be estabilished!", "error");
       }
     } catch (error) {
-      console.log(error);
-      setAlert(true, error.msg, "error");
+      setAlert(true, errorMessage(error), "error");
     }
   }
   const defineAddAmount = () => {
-    const unit = user.balance/20;
-    const factor = (unit < 1000000) ? ((unit < 100000) ? ((unit < 10000) ? 1000 : 1000) : 1000) : 10000; 
+    const unit = userLocal.balance/100;
+    const factor = (unit < 20000) ? ((unit < 10000) ? ((unit < 5000) ? 1000 : 5000) : 10000) : 20000; 
     const factors = [factor, 2*factor, 5*factor];
     setAddAmounts(factors);
   }
@@ -73,24 +73,23 @@ function ProjectDetails(props) {
         setEnableBidding(true);
         return setAlert(true, "Amount must be greater than 100", "error");
       }
-      if(amount > user.balance){
+      if(amount > userLocal.balance){
         setEnableBidding(true);
         return setAlert(true, "Insufficient Funds!", "error");
       }
-      const response = await Axios.post(`${serverUrl}/api/bid/${id}`, {amount}, authHeader);
+      const response = await Axios.post(`${serverUrl}/api/bid/${id}`, {amount}, authHeader(tokenLocal));
       console.log(response);
       if(Math.floor(response.status/100) === 2){
-        setUser({...user, balance: response.data.balance});
+        setUserLocal({...userLocal, balance: response.data.balance});
         setAlert(true, "Bid Successfull !", "success");
         history.push('/');
       } else {
         setEnableBidding(true);
-        setAlert(true, response.msg || "Connection to server cannot be estabilished!", "error");
+        setAlert(true, response.data.msg || "Connection to server cannot be estabilished!", "error");
       }
     } catch (error) {
-      console.log(error);
       setEnableBidding(true);
-      setAlert(true, error.msg, "error");
+      setAlert(true, errorMessage(error), "error");
     }
   }
   const handleAmountChange = e => setAmount(e.target.value);
@@ -144,7 +143,7 @@ function ProjectDetails(props) {
                     Save Bid { !enableBidding && <CircularProgress /> }
                   </Button>
                   <Typography variant="body1">
-                    Available Balance: {user.balance}
+                    Available Balance: {userLocal.balance}
                   </Typography>
                 </Grid>
               </Grid>

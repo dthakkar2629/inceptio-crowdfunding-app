@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
@@ -6,12 +6,13 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import {Home, CasinoOutlined, FileCopy} from '@material-ui/icons';
+import {Home, CasinoOutlined, FileCopy, ExitToAppOutlined} from '@material-ui/icons';
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import BalanceMsg from '../BalanceMsg';
+import { UserContext } from '../Contexts/userContext';
 
 const useStyles = makeStyles({
   list: {
@@ -28,17 +29,21 @@ const useStyles = makeStyles({
 
 export default function DrawerLeft(props) {
   const classes = useStyles();
+  const {userLocal, setUserLocal, setTokenLocal} = useContext(UserContext);
   const [state, setState] = React.useState({
     left: false,
   });
-
   const toggleDrawer = (side, open) => event => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
     setState({ ...state, [side]: open });
   };
+
+  const deleteUser = () => {
+    setUserLocal("");
+    setTokenLocal("");
+  }
 
   const sideList = side => (
     <div
@@ -57,13 +62,6 @@ export default function DrawerLeft(props) {
         <ListItem>
           <BalanceMsg/>
         </ListItem>
-        {/* <ListItem>
-          <Link to="/meet-the-team">Team</Link>
-        </ListItem>
-        <Divider/>
-        <ListItem>
-          <Link to="/logout">Logout</Link>
-        </ListItem> */}
       </List>
       <Divider />
       <List>
@@ -80,10 +78,18 @@ export default function DrawerLeft(props) {
           </ListItem>
         </Link>
       </List>
+      <Divider />
+      <List>
+        <ListItem onClick={deleteUser} button>
+          <ListItemIcon><ExitToAppOutlined/></ListItemIcon>
+          <ListItemText>Logout</ListItemText>
+        </ListItem>
+      </List>
     </div>
   );
 
   return (
+    userLocal &&
     <div>
       <AppBar
         position="fixed"
