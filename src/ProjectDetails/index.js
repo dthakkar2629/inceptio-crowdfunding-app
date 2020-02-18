@@ -11,6 +11,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import { AlertContext } from '../Contexts/alertContext';
 import { UserContext } from '../Contexts/userContext';
 import { errorMessage } from '../utils/errorHandler';
+import BalanceMsg from '../BalanceMsg';
 
 const useStyles = makeStyles(theme => ({
   projectImage: {
@@ -142,9 +143,7 @@ function ProjectDetails(props) {
                   <Button disabled={!enableBidding} onClick={bidNow} fullWidth variant="contained" color="primary">
                     Save Bid { !enableBidding && <CircularProgress /> }
                   </Button>
-                  <Typography variant="body1">
-                    Available Balance: {userLocal.balance}
-                  </Typography>
+                  <BalanceMsg styleProp={{marginTop: "1rem"}} />
                 </Grid>
               </Grid>
             </div>

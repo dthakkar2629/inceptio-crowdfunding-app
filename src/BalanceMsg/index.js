@@ -6,7 +6,7 @@ function BalanceMsg(props) {
   const {userLocal} = useContext(UserContext);
   return (
     userLocal ?
-    <MuiAlert style={props.styleProp} elevation={2} variant="filled" severity="info">Your Balance: ₹ {userLocal.balance}</MuiAlert>
+    <MuiAlert style={props.styleProp} elevation={2} variant="filled" severity="info">Your Balance: ₹{userLocal.balance}</MuiAlert>
     :
     <></>
   )
