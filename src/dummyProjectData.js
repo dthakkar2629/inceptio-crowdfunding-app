@@ -146,5 +146,5 @@ export const projects = [{
     "funds": 0
 }];
 
-// export const serverUrl = "https://crowdfunding-backend.herokuapp.com";
-export const serverUrl = "http://localhost:5000";
+export const serverUrl = "https://crowdfunding-backend.herokuapp.com";
+// export const serverUrl = "http://localhost:5000";

@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
-import { Container, CssBaseline, makeStyles, Typography, TextField, Button } from '@material-ui/core';
+import React, { useContext, useState } from 'react';
+import { Container, CssBaseline, makeStyles, Typography, TextField, Button, CircularProgress } from '@material-ui/core';
 import { UserContext } from '../Contexts/userContext';
 import Axios from 'axios';
 import { serverUrl } from '../dummyProjectData';
 import useInputState from '../Hooks/useInputState';
 import { AlertContext } from '../Contexts/alertContext';
 import { errorMessage } from '../utils/errorHandler';
+
 const useStyles = makeStyles( theme => ({
   root: {
     minHeight: "100vh",
@@ -27,6 +28,14 @@ const useStyles = makeStyles( theme => ({
   caption: {
     color: "white",
     fontSize: "1.5rem"
+  },
+  notchedOutline: {
+    borderWidth: "3px",
+    borderColor: "white !important"
+  },
+  input: {
+    color: "white",
+    fontWeight: 500
   }
 }))
 
@@ -36,9 +45,10 @@ function Login(props) {
   const [uid, setUid] = useInputState("");
   const [password, setPassword] = useInputState("");
   const {setAlert} = useContext(AlertContext);
+  const [loading, setLoading] = useState(false);
   const handleLogin = async (e) => {
     try {
-      e.preventDefault();
+      setLoading(true);
       const response = await Axios.post(`${serverUrl}/api/user/login`, {uid, password});
       const {token, user} = response.data;
       console.log({token, user});
@@ -46,6 +56,7 @@ function Login(props) {
       setTokenLocal(token);
       setUserLocal(user);
     } catch (error) {
+      setLoading(false);
       setAlert(true, errorMessage(error), "error");
     }
   }
@@ -69,6 +80,18 @@ function Login(props) {
               className={classes.inputTextFieldMain}
               value={uid}
               onChange={setUid}
+              required
+              InputProps={{
+                classes: {
+                  notchedOutline: classes.notchedOutline,
+                  input: classes.input
+                }
+              }}
+              InputLabelProps={{
+                style: {
+                  color: "white"
+                }
+              }}
             />
           </div>
           <div className={classes.inputTextField}>
@@ -77,15 +100,27 @@ function Login(props) {
               variant="outlined"
               type="password"
               fullWidth
+              required
               color="secondary"
               className={classes.inputTextFieldMain}
               value={password}
               onChange={setPassword}
+              InputProps={{
+                classes: {
+                  notchedOutline: classes.notchedOutline,
+                  input: classes.input
+                }
+              }}
+              InputLabelProps={{
+                style: {
+                  color: "white"
+                }
+              }}
             />
           </div>
           <div className={classes.inputTextField}>
-            <Button onClick={handleLogin} fullWidth variant="contained" color="secondary">
-              Sign In
+            <Button disabled={loading} onClick={handleLogin} fullWidth variant="contained" color="secondary">
+              Sign In {loading && <CircularProgress/>}
             </Button>
           </div>
         </div>
