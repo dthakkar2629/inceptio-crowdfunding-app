@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import {Home, CasinoOutlined, FileCopy, ExitToAppOutlined} from '@material-ui/icons';
+import {Home, CasinoOutlined, FileCopy, ExitToAppOutlined, Person} from '@material-ui/icons';
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
@@ -57,6 +57,10 @@ export default function DrawerLeft(props) {
           <ListItem button>
             <ListItemIcon><Home/></ListItemIcon>
             <ListItemText>Home</ListItemText>
+          </ListItem>
+          <ListItem>
+            <ListItemIcon><Person/></ListItemIcon>
+            <ListItemText>{userLocal.name}</ListItemText>
           </ListItem>
         </Link>
         <ListItem>

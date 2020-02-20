@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 });
 
 function ProjectCard(props) {// eslint-disable-next-line
-  const {_id, title, description, picture} = props;
+  const {_id, title, brief, picture} = props;
   const classes = useStyles();
   return (
     <Card className={classes.card}>
@@ -40,7 +40,7 @@ function ProjectCard(props) {// eslint-disable-next-line
               {title}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {description}
+              {brief}
             </Typography>
           </CardContent>
         </CardActionArea>

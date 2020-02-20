@@ -158,4 +158,4 @@ function ProjectDetails(props) {
   )
 };
 
-export default ProjectDetails
+export default ProjectDetails;

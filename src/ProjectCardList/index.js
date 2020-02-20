@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Grid, makeStyles } from '@material-ui/core';
+import { Grid, makeStyles, Typography } from '@material-ui/core';
 import { serverUrl } from '../dummyProjectData';
 import ProjectCard from '../ProjectCard';
 import Axios from 'axios';
@@ -7,6 +7,7 @@ import LoadingBar from '../LoadingBar';
 import { authHeader } from '../utils/headerBuilder';
 import BalanceMsg from '../BalanceMsg';
 import { UserContext } from '../Contexts/userContext';
+import { blue } from '@material-ui/core/colors';
 
 const useStyles = makeStyles({
   root: {
@@ -16,6 +17,12 @@ const useStyles = makeStyles({
   cardGrid: {
     display: "flex",
     justifyContent: "center"
+  },
+  heading: {
+    margin: "0 auto 1rem auto",
+    textAlign: "center",
+    fontWeight: 700,
+    color: blue[800]
   }
 })
 
@@ -38,6 +45,9 @@ function ProjectCardList(props) {
     <LoadingBar height={42}/> : 
     <div className={classes.root}>
       <BalanceMsg styleProp={{ maxWidth: "70vw", margin: "0 auto 1rem auto" }} />
+      <Typography className={classes.heading} variant="h4">
+        All Projects
+      </Typography>
       <Grid container spacing={2}>
         {projects.map(p => 
           <Grid key={p._id} className={classes.cardGrid} item xs={12} sm={6} md={4}>
