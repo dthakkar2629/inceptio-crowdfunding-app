@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import LoadingBar from '../LoadingBar';
-import { Typography, List, ListItem, ListItemText, Paper, makeStyles } from '@material-ui/core';
+import { Typography, List, ListItem, makeStyles } from '@material-ui/core';
 import Axios from 'axios';
 import { serverUrl } from '../dummyProjectData';
 import { authHeader } from '../utils/headerBuilder';
-import { Link } from 'react-router-dom';
-import Moment from 'react-moment';
-import { green } from '@material-ui/core/colors';
 import BalanceMsg from '../BalanceMsg';
-import NumberFormat from 'react-number-format';
 import { UserContext } from '../Contexts/userContext';
+import BidItem from './BidItem';
 
 const useStyles = makeStyles(({
   bidItemPaper: {
@@ -34,10 +31,15 @@ function MyBids(props) {
     fetchBids();// eslint-disable-next-line
   }, []);
   const fetchBids = async () => {
-    const response = await Axios.get(`${serverUrl}/api/bid/fetch-all`, authHeader(tokenLocal));
-    setBids(response.data.bids);
-    setLoading(false);
-  }
+    try {
+      const response = await Axios.get(`${serverUrl}/api/bid/fetch-all`, authHeader(tokenLocal));
+      console.log({response});
+      setBids(response.data.bids);
+      setLoading(false);
+    } catch (error) {
+      
+    }
+  };
   return (
     loading?
     <LoadingBar/>
@@ -50,22 +52,7 @@ function MyBids(props) {
         </ListItem>
         {
           bids.map(bid => (
-            <Link key={bid._id} className={classes.noLinkDecor} to={`/project/${bid.project._id}`}>
-              <ListItem button>
-                <Paper className={classes.bidItemPaper} elevation={2}>
-                  <ListItemText 
-                    primary={bid.project.title} 
-                    secondary={
-                      <span>
-                        <span style={{color: green[500], fontWeight: 700}}>
-                        ₹ <NumberFormat displayType="text" thousandSeparator={true} thousandsGroupStyle="lakh" value={bid.amount} />
-                        </span>
-                        <Moment style={{float: "right"}} fromNow>{new Date(bid.createdAt)}</Moment>
-                      </span>
-                  }  />
-                </Paper>
-              </ListItem>
-            </Link>
+            <BidItem bid={bid} addNewBid />
           ))
         }
       </List>
@@ -73,4 +60,4 @@ function MyBids(props) {
   )
 }
 
-export default MyBids
+export default MyBids;

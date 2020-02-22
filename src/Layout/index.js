@@ -3,14 +3,13 @@ import DrawerLeft from '../DrawerLeft';
 import { Route, Switch } from 'react-router-dom';
 import ProjectCardList from '../ProjectCardList';
 import ProjectDetails from '../ProjectDetails';
-import PanelistLogin from '../PanelistLogin';
 import { UserContext } from '../Contexts/userContext';
 import MyBids from '../MyBids';
 import { Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { AlertContext } from '../Contexts/alertContext';
-import AudienceLogin from '../AudienceLogin';
 import Login from '../Login';
+import Bid from '../Bid';
 
 function Layout(props) {
   const {userLocal} = useContext(UserContext);
@@ -19,6 +18,24 @@ function Layout(props) {
     handleAlertClose,
     alertType,
     alertMsg } = useContext(AlertContext);
+  const routes = [
+    {
+      path: "/",
+      component: ProjectCardList
+    },
+    {
+      path: "/project/:id",
+      component: ProjectDetails
+    },
+    {
+      path: "/my-bids",
+      component: MyBids 
+    },
+    {
+      path: "/bid/:id",
+      component: Bid
+    }
+  ]
   return (
     <>
       <DrawerLeft/>
@@ -26,9 +43,9 @@ function Layout(props) {
         userLocal ?
         <div style={{minHeight: "80vh", paddingTop: "4rem"}}>
           <Switch>
-            <Route exact path="/" render={(routeProps) => <ProjectCardList {...routeProps} />}/>
-            <Route exact path="/project/:id" render={(routeProps) => <ProjectDetails {...routeProps} />} />
-            <Route exact path="/my-bids" render={(routeProps) => <MyBids {...routeProps} />} />
+            {
+              routes.map(route => <Route exact {...route} />)
+            }
           </Switch>
         </div>
         :
