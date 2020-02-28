@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Container, CssBaseline, makeStyles, Typography, TextField, Button, CircularProgress } from '@material-ui/core';
+import { makeStyles, TextField, Button, CircularProgress } from '@material-ui/core';
 import { UserContext } from '../Contexts/userContext';
 import Axios from 'axios';
 import { serverUrl } from '../dummyProjectData';
@@ -50,7 +50,6 @@ function PanelistLogin(props) {
           variant="outlined"
           fullWidth
           color="secondary"
-          className={classes.inputTextFieldMain}
           value={uid}
           onChange={setUid}
           required
@@ -75,7 +74,6 @@ function PanelistLogin(props) {
           fullWidth
           required
           color="secondary"
-          className={classes.inputTextFieldMain}
           value={password}
           onChange={setPassword}
           InputProps={{

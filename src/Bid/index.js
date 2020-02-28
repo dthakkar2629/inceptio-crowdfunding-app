@@ -29,7 +29,7 @@ function Bid(props) {
   const [loading, setLoading] = useState(true);
   const [bidding, setBidding] = useState(false);
   useEffect(() => {
-    fetchBid();
+    fetchBid();// eslint-disable-next-line
   }, []);
   const handleAmountChange = e => setAmount(e.target.value);
   const fetchBid = async () => {

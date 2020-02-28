@@ -36,10 +36,10 @@ function ProjectCard(props) {// eslint-disable-next-line
             title={title}
           />
           <CardContent className={classes.cardActionArea}>
-            <Typography gutterBottom variant="h5" component="h2">
+            <Typography gutterBottom  color="textPrimary" variant="h5">
               {title}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography variant="body2" color="textSecondary">
               {brief}
             </Typography>
           </CardContent>

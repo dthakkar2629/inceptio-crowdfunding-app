@@ -3,21 +3,19 @@ import { makeStyles, CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(1),
-    "& .MuiLinearProgress-colorPrimary": {
-      backgroundColor: '#e0dfdc',
-      "& .MuiLinearProgress-barColorPrimary": {
-        backgroundColor: '#c4c4c2',  
-      }
-    }
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)"
   }
 }))
 
 function LoadingBar(props) {
   const classes = useStyles();
+  const {size, thickness} = props;
   return (
     <div className={classes.root}>
-      <CircularProgress />
+      <CircularProgress size={size} thickness={thickness} />
     </div>
   )
 }

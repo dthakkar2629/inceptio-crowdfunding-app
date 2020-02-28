@@ -89,6 +89,20 @@ export default function DrawerLeft(props) {
           <ListItemText>Logout</ListItemText>
         </ListItem>
       </List>
+      {
+        userLocal.isAdmin && 
+        <>
+          <Divider />
+          <List>
+            <Link className={classes.noLinkDecor} to="/admin/results">
+              <ListItem button>
+                <ListItemIcon><ExitToAppOutlined/></ListItemIcon>
+                <ListItemText>Admin - Results</ListItemText>
+              </ListItem>
+            </Link>
+          </List>
+        </>
+      }
     </div>
   );
 

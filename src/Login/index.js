@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import AudienceLogin from '../AudienceLogin'
-import PanelistLogin from '../PanelistLogin'
-import { Container, CssBaseline, makeStyles, Button, Typography } from '@material-ui/core'
+import React, { useState } from 'react';
+import AudienceLogin from '../AudienceLogin';
+import PanelistLogin from '../PanelistLogin';
+import { Container, CssBaseline, makeStyles, Button, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles( theme => ({
   root: {

@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Container, CssBaseline, makeStyles, Typography, TextField, Button, CircularProgress, Grid } from '@material-ui/core';
+import React, { useContext, useState } from 'react';
+import { makeStyles, TextField, Button, CircularProgress, Grid } from '@material-ui/core';
 import { UserContext } from '../Contexts/userContext';
 import Axios from 'axios';
 import { serverUrl } from '../dummyProjectData';

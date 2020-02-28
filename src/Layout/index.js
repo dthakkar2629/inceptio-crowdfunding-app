@@ -10,6 +10,7 @@ import Alert from '@material-ui/lab/Alert';
 import { AlertContext } from '../Contexts/alertContext';
 import Login from '../Login';
 import Bid from '../Bid';
+import Results from '../Admin/Results';
 
 function Layout(props) {
   const {userLocal} = useContext(UserContext);
@@ -34,6 +35,10 @@ function Layout(props) {
     {
       path: "/bid/:id",
       component: Bid
+    },
+    {
+      path: "/admin/results",
+      component: Results
     }
   ]
   return (

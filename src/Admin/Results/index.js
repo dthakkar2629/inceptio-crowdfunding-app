@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Grid, makeStyles, Typography } from '@material-ui/core';
-import { serverUrl } from '../dummyProjectData';
-import ProjectCard from '../ProjectCard';
+import React, { useState, useContext, useEffect } from 'react';
+import { serverUrl } from '../../dummyProjectData';
+import { authHeader } from '../../utils/headerBuilder';
+import { UserContext } from '../../Contexts/userContext';
 import Axios from 'axios';
-import LoadingBar from '../LoadingBar';
-import { authHeader } from '../utils/headerBuilder';
-import BalanceMsg from '../BalanceMsg';
-import { UserContext } from '../Contexts/userContext';
+import LoadingBar from '../../LoadingBar';
+import { makeStyles, Typography, Grid } from '@material-ui/core';
 import { blue } from '@material-ui/core/colors';
+import ProjectCard from './ProjectCard';
 
 const useStyles = makeStyles({
   root: {
@@ -26,32 +25,31 @@ const useStyles = makeStyles({
   }
 })
 
-function ProjectCardList(props) {
+function Results(props) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const {tokenLocal} = useContext(UserContext);
+  const classes = useStyles();
   useEffect(() => {
     fetchProjects();// eslint-disable-next-line
   }, []);
   const fetchProjects = async () => {
-    const response = await Axios.get(`${serverUrl}/api/project/fetch-all`, authHeader(tokenLocal));
+    const response = await Axios.get(`${serverUrl}/admin/results`, authHeader(tokenLocal));
     console.log(response);
     setProjects(response.data.projects);
     setLoading(false);
-  }
-  const classes = useStyles();
+  };
   return (
-  loading ? 
+    loading ? 
     <LoadingBar thickness={5} size={100} /> : 
     <div className={classes.root}>
-      <BalanceMsg styleProp={{ maxWidth: "70vw", margin: "0 auto 1rem auto" }} />
       <Typography className={classes.heading} variant="h4">
         All Projects
       </Typography>
       <Grid container spacing={2}>
-        {projects.map(p => 
+        {projects.map((p, i) => 
           <Grid key={p._id} className={classes.cardGrid} item xs={12} sm={6} md={4}>
-            <ProjectCard {...p} />
+            <ProjectCard {...p} rank={i+1} />
           </Grid>
         )}
       </Grid>
@@ -59,4 +57,4 @@ function ProjectCardList(props) {
   )
 };
 
-export default ProjectCardList
+export default Results;

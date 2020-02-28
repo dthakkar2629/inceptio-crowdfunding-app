@@ -8,7 +8,7 @@ function TimerButton(props) {
       setTimer(timer => timer - 1);
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(interval);// eslint-disable-next-line
   }, []);
   return (
     <Button onClick={handleResendOtp} fullWidth variant="contained" disabled={timer > 0} color="primary">

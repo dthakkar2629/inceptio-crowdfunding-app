@@ -131,7 +131,7 @@ function ProjectDetails(props) {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item xs={12} className={classes.addButtons}>
+                <Grid item xs={12} sm={6} md={12} className={classes.addButtons}>
                   {addAmounts.map(amt => (
                     <Fab key={amt} variant="extended" size="small" color="secondary" value={amt} aria-label="add" onClick={e => setAmount(amount => parseInt(amount || 0)+amt)}>
                       <AddIcon />
@@ -139,10 +139,12 @@ function ProjectDetails(props) {
                     </Fab>
                   ))}
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={6} md={12}>
                   <Button disabled={!enableBidding} onClick={bidNow} fullWidth variant="contained" color="primary">
                     Save Bid { !enableBidding && <CircularProgress /> }
                   </Button>
+                </Grid>
+                <Grid item xs={12}>
                   <BalanceMsg styleProp={{marginTop: "1rem"}} />
                 </Grid>
               </Grid>
