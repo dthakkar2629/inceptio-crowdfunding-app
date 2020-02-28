@@ -22,19 +22,6 @@ const useStyles = makeStyles({
   },
   cardActionArea: {
     height: "144.4px"
-  },
-  firstRank: {
-    background: "#CAC531",  /* fallback for old browsers */
-    webkbackgro: "-webkit-linear-gradient(to right, #F3F9A7, #CAC531)",  /* Chrome 10-25, Safari 5.1-6 */
-    background: "linear-gradient(to right, #F3F9A7, #CAC531)" /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  },
-  secondRank: {
-    backgroundColor: "#e7eff9",
-    backgroundImage: "linear-gradient(315deg, #e7eff9 0%, #cfd6e6 74%)"
-  },
-  thirdRank: {
-    backgroundColor: "#772f1a",
-    backgroundImage: "linear-gradient(315deg, #772f1a 0%, #f2a65a 74%)"
   }
 });
 
@@ -62,7 +49,7 @@ function ProjectCard(props) {// eslint-disable-next-line
           <CardActionArea>
             <CardMedia
               className={classes.media}
-              image={`https://picsum.photos/seed/${title.split(" ")[0]}/200/300`}
+              image={`http://iecnmims.in/cw/${picture}.png`}
               title={title}
             />
             <CardContent className={classes.cardActionArea}>

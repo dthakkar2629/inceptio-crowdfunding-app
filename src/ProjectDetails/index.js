@@ -109,7 +109,7 @@ function ProjectDetails(props) {
           <Grid container spacing={3}>
             <Grid item xs={12} md={8}>
               <div>
-                <img className={classes.projectImage} src={`https://picsum.photos/seed/${project.title.split(" ")[0]}/1014/570`} alt="project"/>
+                <img className={classes.projectImage} src={`http://iecnmims.in/cw/${project.picture}.png`} alt="project"/>
               </div>
             </Grid>
             <Grid item xs={12} md={4}>
@@ -150,7 +150,7 @@ function ProjectDetails(props) {
               </Grid>
             </div>
             <Typography variant="body2" className={classes.description}>
-              Existing research on antecedent of funding success mainly focuses on basic project properties such as funding goal, duration, and project category. In this study, we view the process by which project owners raise funds from backers as a persuasion process through project descriptions. Guided by the unimodel theory of persuasion, this study identifies three exemplary antecedents (length, readability, and tone) from the content of project descriptions and two antecedents (past experience and past expertise) from the trustworthy cue of project descriptions. The proposed model also has superior true positive and true negative rates. 
+              {project.description}
             </Typography>
             </Grid>
           </Grid>
